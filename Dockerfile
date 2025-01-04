@@ -1,6 +1,6 @@
 FROM rust AS build
 RUN rustup toolchain install nightly
-RUN apt update && apt install nodejs npm curl libcurl4
+RUN apt update && apt install -y nodejs npm curl libcurl4
 COPY . .
 RUN cargo +nightly build --release
 
