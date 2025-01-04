@@ -33,9 +33,12 @@ pub async fn waypoints(world_data: &mut WorldData) -> Result<()> {
         Vec2::new(a.next().and_then(|a| a.parse().ok()).unwrap(), a.next().and_then(|a| a.parse().ok()).unwrap())
     }
 
-    let mut waypoints = reader.records().map(|res| {
+    let mut waypoints = reader.records().filter_map(|res| {
         let res = res.unwrap();
-        (res.get(0).unwrap().into(), parse_coords(res.get(1).unwrap()), vec![])
+        if res.get(0).unwrap().starts_with("AA") {
+            return None
+        }
+        Some((res.get(0).unwrap().into(), parse_coords(res.get(1).unwrap()), vec![]))
     }).collect::<Vec<_>>();
 
     let mut airways = vec![];
