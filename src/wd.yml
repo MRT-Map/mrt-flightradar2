@@ -1,0 +1,14 @@
+classes: [["XS", "S", "MS", "M", "ML", "L"], ["SP"]]
+airports: []
+flights: null
+planes:
+  - id: "Airplane"
+    name: "Airplane"
+    manufacturer: "Me"
+    class: "XS"
+    motion:
+      max_v: [15.0, 5.0]
+      max_a: [1.0, 0.3]
+      turning_radius: 100.0
+    icon: null
+waypoints: []
