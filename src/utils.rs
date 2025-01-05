@@ -1,14 +1,29 @@
 use std::sync::LazyLock;
 
-use color_eyre::{Report, Result};
+use color_eyre::{eyre::eyre, Report, Result};
 use glam::Vec2;
+use serde::{Deserialize, Deserializer};
 
-pub fn parse_coords(c: &str) -> Vec2 {
-    let mut a = c.trim().split(' ');
-    Vec2::new(
-        a.next().and_then(|a| a.parse().ok()).unwrap(),
-        a.next().and_then(|a| a.parse().ok()).unwrap(),
-    )
+pub fn parse_coords(c: &str) -> Result<Vec2> {
+    let a = c.trim().split(' ').collect::<Vec<_>>();
+    if a.len() == 2 {
+        Ok(Vec2::new(a[0].parse()?, a[1].parse()?))
+    } else if a.len() == 3 {
+        Ok(Vec2::new(a[0].parse()?, a[2].parse()?))
+    } else {
+        Err(eyre!("{c} is not a valid coordinate"))
+    }
+}
+
+pub fn deserialize_coords<'de, D: Deserializer<'de>>(de: D) -> Result<Option<Vec2>, D::Error> {
+    let s = <&str>::deserialize(de)?;
+    if s.trim().is_empty() {
+        return Ok(None);
+    }
+    match parse_coords(s) {
+        Ok(v) => Ok(Some(v)),
+        Err(e) => Err(serde::de::Error::custom(e.to_string())),
+    }
 }
 
 pub static SURF_CLIENT: LazyLock<surf::Client> =

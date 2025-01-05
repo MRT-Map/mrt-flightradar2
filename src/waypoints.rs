@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use air_traffic_simulator::{WorldData, engine::world_data::Waypoint};
+use air_traffic_simulator::{engine::world_data::Waypoint, WorldData};
 use color_eyre::Result;
 use glam::Vec2;
 use itertools::Itertools;
@@ -27,7 +27,7 @@ pub async fn waypoints(world_data: &mut WorldData) -> Result<()> {
     let string = get_url("https://docs.google.com/spreadsheets/d/11E60uIBKs5cOSIRHLz0O0nLCefpj7HgndS1gIXY_1hw/export?format=csv&gid=707730663").await?;
     let mut reader = csv::Reader::from_reader(string.as_bytes());
 
-    let mut waypoints = reader
+    let mut waypoints: Vec<(SmolStr, Vec2, Vec<SmolStr>)> = reader
         .records()
         .filter_map(|res| {
             let res = res.unwrap();
@@ -36,11 +36,11 @@ pub async fn waypoints(world_data: &mut WorldData) -> Result<()> {
             }
             Some((
                 res.get(0).unwrap().into(),
-                parse_coords(res.get(1).unwrap()),
+                parse_coords(res.get(1).unwrap()).unwrap(),
                 vec![],
             ))
         })
-        .collect::<Vec<_>>();
+        .collect();
 
     let mut airways = vec![];
     for (name, coords, _) in &waypoints {
