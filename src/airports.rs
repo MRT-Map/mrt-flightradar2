@@ -120,6 +120,9 @@ pub async fn airports(world_data: &mut WorldData) -> Result<()> {
                     class: class.into(),
                 }));
             }
+            if runways.is_empty() {
+                return Ok(None);
+            }
             Ok(Some(Arc::new(AirportData {
                 name: res.name,
                 code: res.code,
