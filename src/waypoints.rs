@@ -1,13 +1,14 @@
 use std::sync::Arc;
 
 use air_traffic_simulator::{WorldData, engine::world_data::Waypoint};
-use color_eyre::{Report, Result};
+use color_eyre::Result;
 use glam::Vec2;
 use itertools::Itertools;
+use smol_str::SmolStr;
 
-use crate::utils::{SURF_CLIENT, get_url, parse_coords};
+use crate::utils::{get_url, parse_coords};
 
-fn nearest_waypoints(waypoints: &[(String, Vec2, Vec<&String>)], wp: Vec2) -> Vec<String> {
+fn nearest_waypoints(waypoints: &[(SmolStr, Vec2, Vec<SmolStr>)], wp: Vec2) -> Vec<SmolStr> {
     let mut radius = 0.0;
     let mut nearest = vec![];
     while nearest.len() < 3 {
@@ -52,9 +53,9 @@ pub async fn waypoints(world_data: &mut WorldData) -> Result<()> {
             .iter()
             .filter_map(|(a, b)| {
                 if *a == *name {
-                    Some(b)
+                    Some(b.to_owned())
                 } else if *b == *name {
-                    Some(a)
+                    Some(a.to_owned())
                 } else {
                     None
                 }
@@ -67,9 +68,9 @@ pub async fn waypoints(world_data: &mut WorldData) -> Result<()> {
         .into_iter()
         .map(|(name, coords, conns)| {
             Arc::new(Waypoint {
-                name: name.into(),
+                name,
                 pos: coords,
-                connections: conns.into_iter().map(Into::into).collect(),
+                connections: conns.into(),
             })
         })
         .collect();

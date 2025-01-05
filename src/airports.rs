@@ -4,9 +4,9 @@ use air_traffic_simulator::{
     WorldData,
     engine::world_data::{AirportData, Runway},
 };
-use color_eyre::{Report, Result};
+use color_eyre::Result;
 
-use crate::utils::{SURF_CLIENT, get_url, parse_coords};
+use crate::utils::{get_url, parse_coords};
 
 pub async fn airports(world_data: &mut WorldData) -> Result<()> {
     let string = get_url("https://docs.google.com/spreadsheets/d/11E60uIBKs5cOSIRHLz0O0nLCefpj7HgndS1gIXY_1hw/export?format=csv&gid=0").await?;

@@ -1,4 +1,4 @@
-use std::cell::LazyCell;
+use std::sync::LazyLock;
 
 use color_eyre::{Report, Result};
 use glam::Vec2;
@@ -11,8 +11,8 @@ pub fn parse_coords(c: &str) -> Vec2 {
     )
 }
 
-pub static SURF_CLIENT: LazyCell<surf::Client> =
-    LazyCell::new(|| surf::client().with(surf::middleware::Redirect::new(5)));
+pub static SURF_CLIENT: LazyLock<surf::Client> =
+    LazyLock::new(|| surf::client().with(surf::middleware::Redirect::new(5)));
 pub async fn get_url(url: &'static str) -> Result<String> {
     SURF_CLIENT
         .send(surf::get(url))
