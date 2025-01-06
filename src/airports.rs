@@ -103,17 +103,18 @@ pub async fn airports(world_data: &mut WorldData) -> Result<()> {
                 let class = match size.as_deref() {
                     Some("XSmall") => "XS",
                     Some("Small") => "S",
-                    Some("Large") | _ => "L",
+                    Some("Medium") => "M",
+                    _ => "L",
                 };
                 runways.push(Arc::new(Runway {
-                    name: dir1.unwrap_or_default().into(),
+                    name: dir1.unwrap_or_default(),
                     start: pos1,
                     end: pos2,
                     altitude: alt.unwrap_or_default(),
                     class: class.into(),
                 }));
                 runways.push(Arc::new(Runway {
-                    name: dir2.unwrap_or_default().into(),
+                    name: dir2.unwrap_or_default(),
                     start: pos2,
                     end: pos1,
                     altitude: alt.unwrap_or_default(),

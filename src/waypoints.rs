@@ -1,14 +1,12 @@
 use std::sync::Arc;
 
 use air_traffic_simulator::{engine::world_data::Waypoint, WorldData};
-use color_eyre::{eyre::eyre, Report, Result};
+use color_eyre::Result;
 use gatelogue_types::GatelogueData;
 use glam::{DVec2, Vec2};
 use itertools::Itertools;
 use rand::prelude::*;
 use smol_str::SmolStr;
-
-use crate::utils::{get_url, parse_coords};
 
 struct WaypointNameGenerator(Vec<SmolStr>, StdRng);
 impl WaypointNameGenerator {
@@ -58,23 +56,17 @@ fn nearest_waypoints(waypoints: &[(SmolStr, Vec2, Vec<SmolStr>)], wp: Vec2) -> V
     nearest
 }
 
-pub async fn waypoints(world_data: &mut WorldData) -> Result<()> {
-    let data = GatelogueData::surf_get_no_sources()
-        .await
-        .map_err(|e| eyre!("{e}"))?;
+pub async fn waypoints(world_data: &mut WorldData, gatelogue_data: &GatelogueData) -> Result<()> {
     let mut gen = WaypointNameGenerator::new(0);
 
-    let mut waypoints: Vec<(SmolStr, Vec2, Vec<SmolStr>)> = data
-        .nodes
-        .values()
-        .filter_map(|a| {
-            a.as_town()
-                .and_then(|a| a.common.coordinates.to_owned())
-                .or_else(|| {
-                    a.as_air_airport()
-                        .and_then(|a| a.common.coordinates.to_owned())
-                })
-        })
+    let mut waypoints: Vec<(SmolStr, Vec2, Vec<SmolStr>)> = gatelogue_data
+        .air_airports()
+        .filter_map(|a| a.common.coordinates.to_owned())
+        .chain(
+            gatelogue_data
+                .towns()
+                .filter_map(|a| a.common.coordinates.to_owned()),
+        )
         .map(|c| (gen.next().unwrap(), { DVec2::from(*c).as_vec2() }, vec![]))
         .collect();
 
