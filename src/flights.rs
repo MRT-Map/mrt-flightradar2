@@ -18,7 +18,7 @@ pub async fn flights(world_data: &mut WorldData, gatelogue_data: &GatelogueData)
                         .name
                         .to_owned()
                         .into(),
-                    code: a.codes.first().ok_or_eyre("No code")?.into(),
+                    code: a.codes.join("/").into(),
                     from: {
                         let gate = gatelogue_data
                             .get_air_gate(**a.gates.first().ok_or_eyre("No from")?)?;

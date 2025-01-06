@@ -1,4 +1,8 @@
-use std::sync::Arc;
+use std::{
+    cell::LazyCell,
+    iter::Iterator,
+    sync::{Arc, LazyLock},
+};
 
 use air_traffic_simulator::{engine::world_data::Waypoint, WorldData};
 use color_eyre::Result;
@@ -17,6 +21,44 @@ impl WaypointNameGenerator {
 
 pub const CONSONANTS: &str = "BBCCCDDDFFGGHHJKKLLLMMMNNNPPQRRRSSSTTTVVWWXYZZ";
 pub const VOWELS: &str = "AAEEIIOOUUY";
+pub const DIPHTHONGS1: [&str; 127] = [
+    "BH", "BL", "BR", "BW", "BY", "CH", "CL", "CR", "CY", "CZ", "DH", "DJ", "DR", "DS", "DW", "DY",
+    "DZ", "FL", "FR", "FT", "FW", "FY", "GH", "GL", "GN", "GR", "GW", "GY", "HJ", "HM", "HN", "HR",
+    "HW", "HY", "JH", "JR", "JW", "JY", "KH", "KJ", "KL", "KM", "KN", "KR", "KS", "KV", "KW", "KY",
+    "LH", "LR", "LW", "LY", "MB", "MH", "ML", "MN", "MP", "MR", "MS", "MW", "MY", "ND", "NG", "NH",
+    "NR", "NW", "NY", "PF", "PH", "PL", "PR", "PS", "PT", "PW", "PY", "QH", "QL", "QM", "QN", "QR",
+    "QU", "QV", "QW", "QY", "RH", "RW", "RY", "SB", "SC", "SD", "SG", "SH", "SJ", "SK", "SL", "SM",
+    "SN", "SP", "SQ", "SR", "ST", "SV", "SW", "SY", "SZ", "TH", "TR", "TS", "TW", "TY", "TZ", "VH",
+    "VL", "VR", "VW", "VY", "WH", "WR", "XR", "XW", "XY", "ZH", "ZL", "ZR", "ZS", "ZW", "ZY",
+];
+pub static DIPHTHONGS2: LazyLock<Vec<String>> = LazyLock::new(|| {
+    CONSONANTS
+        .chars()
+        .flat_map(|c1| {
+            "HSTZ"
+                .chars()
+                .map(move |c2| format!("{c1}{c2}"))
+                .chain([format!("{c1}{c1}")])
+        })
+        .chain(
+            [
+                "CK", "RN", "LN", "GN", "NG", "MB", "MP", "ND", "NT", "NK", "NQ",
+            ]
+            .into_iter()
+            .map(Into::into),
+        )
+        .collect()
+});
+pub static DIPHTHONGS3: LazyLock<Vec<String>> = LazyLock::new(|| {
+    CONSONANTS
+        .chars()
+        .flat_map(|c1| "NLR".chars().map(move |c2| format!("{c1}{c2}")))
+        .collect()
+});
+pub static WAYPOINT_NAMINGS: [&str; 18] = [
+    "CVCVC", "CVVCV", "CVCVV", "VVCVC", "VCVVC", "VVCVV", "DVCV", "VCVE", "VCCVV", "VVCCV",
+    "VCCVC", "CVCCV", "VVVF", "DVF", "CVVF", "CVCF", "VVCF", "VEF",
+];
 
 impl Iterator for WaypointNameGenerator {
     type Item = SmolStr;
@@ -24,18 +66,22 @@ impl Iterator for WaypointNameGenerator {
     fn next(&mut self) -> Option<Self::Item> {
         let mut new = SmolStr::default();
         while new.is_empty() || self.0.contains(&new) {
-            new = format!(
-                "{}{}{}{}{}",
-                CONSONANTS.chars().choose(&mut thread_rng()).unwrap(),
-                VOWELS.chars().choose(&mut self.1).unwrap(),
-                CONSONANTS.chars().choose(&mut thread_rng()).unwrap(),
-                VOWELS.chars().choose(&mut self.1).unwrap(),
-                CONSONANTS.chars().choose(&mut thread_rng()).unwrap(),
-            )
-            .into();
-            if new.contains("YY") {
-                new = "".into();
+            let naming = WAYPOINT_NAMINGS.choose(&mut self.1).unwrap();
+            let mut new2 = String::new();
+            for char in naming.chars() {
+                match char {
+                    'C' => new2.push(CONSONANTS.chars().choose(&mut self.1).unwrap()),
+                    'V' => new2.push(VOWELS.chars().choose(&mut self.1).unwrap()),
+                    'D' => new2.push_str(DIPHTHONGS1.choose(&mut self.1).unwrap()),
+                    'E' => new2.push_str(DIPHTHONGS2.choose(&mut self.1).unwrap()),
+                    'F' => new2.push_str(DIPHTHONGS3.choose(&mut self.1).unwrap()),
+                    _ => unreachable!(),
+                }
             }
+            if new2.contains("YY") {
+                new2 = "".into();
+            }
+            new = new2.into();
         }
         Some(new)
     }
