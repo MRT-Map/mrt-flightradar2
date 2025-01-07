@@ -1,5 +1,6 @@
 use std::{
     cell::LazyCell,
+    hash::{DefaultHasher, Hash, Hasher},
     iter::Iterator,
     sync::{Arc, LazyLock},
 };
@@ -12,10 +13,10 @@ use itertools::Itertools;
 use rand::prelude::*;
 use smol_str::SmolStr;
 
-struct WaypointNameGenerator(Vec<SmolStr>, StdRng);
+struct WaypointNameGenerator(Vec<SmolStr>);
 impl WaypointNameGenerator {
-    fn new(seed: u64) -> Self {
-        WaypointNameGenerator(vec![], StdRng::seed_from_u64(seed))
+    fn new() -> Self {
+        WaypointNameGenerator(vec![])
     }
 }
 
@@ -60,21 +61,19 @@ pub static WAYPOINT_NAMINGS: [&str; 18] = [
     "VCCVC", "CVCCV", "VVVF", "DVF", "CVVF", "CVCF", "VVCF", "VEF",
 ];
 
-impl Iterator for WaypointNameGenerator {
-    type Item = SmolStr;
-
-    fn next(&mut self) -> Option<Self::Item> {
+impl WaypointNameGenerator {
+    fn gen(&mut self, rng: &mut StdRng) -> SmolStr {
         let mut new = SmolStr::default();
         while new.is_empty() || self.0.contains(&new) {
-            let naming = WAYPOINT_NAMINGS.choose(&mut self.1).unwrap();
+            let naming = WAYPOINT_NAMINGS.choose(rng).unwrap();
             let mut new2 = String::new();
             for char in naming.chars() {
                 match char {
-                    'C' => new2.push(CONSONANTS.chars().choose(&mut self.1).unwrap()),
-                    'V' => new2.push(VOWELS.chars().choose(&mut self.1).unwrap()),
-                    'D' => new2.push_str(DIPHTHONGS1.choose(&mut self.1).unwrap()),
-                    'E' => new2.push_str(DIPHTHONGS2.choose(&mut self.1).unwrap()),
-                    'F' => new2.push_str(DIPHTHONGS3.choose(&mut self.1).unwrap()),
+                    'C' => new2.push(CONSONANTS.chars().choose(rng).unwrap()),
+                    'V' => new2.push(VOWELS.chars().choose(rng).unwrap()),
+                    'D' => new2.push_str(DIPHTHONGS1.choose(rng).unwrap()),
+                    'E' => new2.push_str(DIPHTHONGS2.choose(rng).unwrap()),
+                    'F' => new2.push_str(DIPHTHONGS3.choose(rng).unwrap()),
                     _ => unreachable!(),
                 }
             }
@@ -83,7 +82,7 @@ impl Iterator for WaypointNameGenerator {
             }
             new = new2.into();
         }
-        Some(new)
+        new
     }
 }
 
@@ -103,8 +102,7 @@ fn nearest_waypoints(waypoints: &[(SmolStr, Vec2, Vec<SmolStr>)], wp: Vec2) -> V
 }
 
 pub async fn waypoints(world_data: &mut WorldData, gatelogue_data: &GatelogueData) -> Result<()> {
-    let mut gen = WaypointNameGenerator::new(0);
-
+    let mut gen = WaypointNameGenerator::new();
     let mut waypoints: Vec<(SmolStr, Vec2, Vec<SmolStr>)> = gatelogue_data
         .air_airports()
         .filter_map(|a| a.common.coordinates.to_owned())
@@ -113,7 +111,18 @@ pub async fn waypoints(world_data: &mut WorldData, gatelogue_data: &GatelogueDat
                 .towns()
                 .filter_map(|a| a.common.coordinates.to_owned()),
         )
-        .map(|c| (gen.next().unwrap(), { DVec2::from(*c).as_vec2() }, vec![]))
+        .map(|c| {
+            (
+                {
+                    let mut s = DefaultHasher::new();
+                    c.0.to_le_bytes().hash(&mut s);
+                    c.1.to_le_bytes().hash(&mut s);
+                    gen.gen(&mut StdRng::seed_from_u64(s.finish()))
+                },
+                { DVec2::from(*c).as_vec2() },
+                vec![],
+            )
+        })
         .collect();
 
     let mut airways = vec![];
