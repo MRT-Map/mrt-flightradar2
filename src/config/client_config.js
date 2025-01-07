@@ -38,13 +38,13 @@ export const tileLayer = new CustomTileLayer("", {
 
 export const altitudeColours = [
     [50, "#aaaaaa"],
-    [100, "#aaaa00"],
-    [150, "#00aa00"],
-    [250, "#00aaaa"],
-    [350, "#0000aa"],
-    [450, "#aa00aa"],
-    [550, "#aa0000"],
-    [650, "#000000"],
+    [150, "#aaaa00"],
+    [250, "#00aa00"],
+    [350, "#00aaaa"],
+    [450, "#0000aa"],
+    [550, "#aa00aa"],
+    [650, "#aa0000"],
+    [999, "#000000"],
 ];
 
 export function world2map([x, y]) {
