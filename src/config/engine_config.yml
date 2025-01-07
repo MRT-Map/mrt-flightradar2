@@ -1,4 +1,6 @@
 tick_duration: 1.0
 plane_spawn_chance: 0.1
-max_planes: 256
-cruising_altitude: 500
+max_planes: 512
+cruising_altitude_plus: 500
+cruising_altitude_minus: 600
+ns_before_ew: false
