@@ -110,14 +110,14 @@ pub async fn airports(world_data: &mut WorldData) -> Result<()> {
                     name: dir1.unwrap_or_default(),
                     start: pos1,
                     end: pos2,
-                    altitude: alt.unwrap_or_default(),
+                    altitude: alt.unwrap_or_default() - 63.0,
                     class: class.into(),
                 }));
                 runways.push(Arc::new(Runway {
                     name: dir2.unwrap_or_default(),
                     start: pos2,
                     end: pos1,
-                    altitude: alt.unwrap_or_default(),
+                    altitude: alt.unwrap_or_default() - 63.0,
                     class: class.into(),
                 }));
             }
