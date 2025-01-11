@@ -89,7 +89,7 @@ fn nearest_waypoints(waypoints: &[(SmolStr, Vec2, Vec<SmolStr>)], wp: Vec2) -> V
     let mut radius = 0.0;
     let mut nearest = vec![];
     while nearest.len() < 3 {
-        radius += 1000.0;
+        radius += 2000.0;
         nearest = waypoints
             .iter()
             .filter(|(_, w, _)| *w != wp)
