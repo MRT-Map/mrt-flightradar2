@@ -14,8 +14,8 @@ use smol_str::SmolStr;
 
 struct WaypointNameGenerator(Vec<SmolStr>);
 impl WaypointNameGenerator {
-    fn new() -> Self {
-        WaypointNameGenerator(vec![])
+    const fn new() -> Self {
+        Self(vec![])
     }
 }
 
@@ -77,10 +77,11 @@ impl WaypointNameGenerator {
                 }
             }
             if new2.contains("YY") {
-                new2 = "".into();
+                new2 = String::new();
             }
             new = new2.into();
         }
+        self.0.push(new.clone());
         new
     }
 }
@@ -104,11 +105,11 @@ pub async fn waypoints(world_data: &mut WorldData, gatelogue_data: &GatelogueDat
     let mut gen = WaypointNameGenerator::new();
     let mut waypoints: Vec<(SmolStr, Vec2, Vec<SmolStr>)> = gatelogue_data
         .air_airports()
-        .filter_map(|a| a.common.coordinates.to_owned())
+        .filter_map(|a| a.common.coordinates.clone())
         .chain(
             gatelogue_data
                 .towns()
-                .filter_map(|a| a.common.coordinates.to_owned()),
+                .filter_map(|a| a.common.coordinates.clone()),
         )
         .map(|c| {
             (
@@ -127,7 +128,7 @@ pub async fn waypoints(world_data: &mut WorldData, gatelogue_data: &GatelogueDat
     let mut airways = vec![];
     for (name, coords, _) in &waypoints {
         for nw in nearest_waypoints(&waypoints, *coords) {
-            airways.push((name.to_owned(), nw.to_owned()))
+            airways.push((name.to_owned(), nw.clone()));
         }
     }
     for (name, _, conns) in &mut waypoints {
@@ -144,7 +145,7 @@ pub async fn waypoints(world_data: &mut WorldData, gatelogue_data: &GatelogueDat
             })
             .sorted()
             .dedup()
-            .collect()
+            .collect();
     }
     world_data.waypoints = waypoints
         .into_iter()

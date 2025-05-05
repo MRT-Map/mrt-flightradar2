@@ -15,8 +15,7 @@ pub async fn flights(world_data: &mut WorldData, gatelogue_data: &GatelogueData)
                 Ok(Some(Arc::new(Flight {
                     airline: gatelogue_data
                         .get_air_airline(*a.airline)?
-                        .name
-                        .to_owned()
+                        .name.clone()
                         .into(),
                     code: a.codes.join("/").into(),
                     from: {
@@ -24,12 +23,11 @@ pub async fn flights(world_data: &mut WorldData, gatelogue_data: &GatelogueData)
                             .get_air_gate(**a.gates.first().ok_or_eyre("No from")?)?;
                         let code = gatelogue_data
                             .get_air_airport(*gate.airport)?
-                            .code
-                            .to_owned()
+                            .code.clone()
                             .into();
                         if !world_data.airports.iter().any(|a| a.code == code) {
                             return Ok(None);
-                        };
+                        }
                         code
                     },
                     to: {
@@ -37,12 +35,11 @@ pub async fn flights(world_data: &mut WorldData, gatelogue_data: &GatelogueData)
                             gatelogue_data.get_air_gate(**a.gates.get(1).ok_or_eyre("No to")?)?;
                         let code = gatelogue_data
                             .get_air_airport(*gate.airport)?
-                            .code
-                            .to_owned()
+                            .code.clone()
                             .into();
                         if !world_data.airports.iter().any(|a| a.code == code) {
                             return Ok(None);
-                        };
+                        }
                         code
                     },
                     plane: ["Airplane".into()].into(),

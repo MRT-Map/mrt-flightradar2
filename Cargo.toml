@@ -6,9 +6,9 @@ edition = "2021"
 [dependencies]
 air-traffic-simulator = { git = "https://github.com/bitfielddev/air-traffic-simulator" }
 
-gatelogue-types = { version = "2.0.1+8", features = ["surf_get"] }
+gatelogue-types = { version = "2.0.2", features = ["surf_get"] }
 
-color-eyre = "0.6.3"
+color-eyre = "0.6.4"
 serde_yaml = "0.9.34"
 tokio = { version = "1.44.2", features = ["full"] }
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
@@ -16,15 +16,15 @@ tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 itertools = "0.14.0"
 surf = "2.3.2"
 csv = "1.3.1"
-glam = "0.30.2"
+glam = "0.30.3"
 smol_str = "0.3.2"
 serde = { version = "1.0.219", features = ["derive"] }
 rand = "0.9.1"
 
-[workspace.lints.rust]
+[lints.rust]
 future-incompatible = "deny"
 
-[workspace.lints.clippy]
+[lints.clippy]
 all = "warn"
 pedantic = "warn"
 #cargo = "warn"
