@@ -1,5 +1,5 @@
 FROM rustlang/rust:nightly-slim AS chef
-RUN apt update && apt install -y curl
+RUN apt update && apt install -y curl pkg-config libssl-dev
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 RUN cargo binstall cargo-chef
 
