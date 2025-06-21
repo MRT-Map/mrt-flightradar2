@@ -4,3 +4,4 @@ max_planes: 256
 cruising_altitude_plus: 500
 cruising_altitude_minus: 600
 ns_before_ew: false
+save_path: ./ats/ats

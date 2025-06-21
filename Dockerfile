@@ -8,5 +8,7 @@ FROM rust:slim
 RUN apt update && apt install -y nodejs npm curl libcurl4
 
 COPY --from=build /target/release/mrt-flightradar2 .
+RUN mkdir ats
+
 EXPOSE 3000
 CMD ["./mrt-flightradar2"]
