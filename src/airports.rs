@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use air_traffic_simulator::{
-    engine::world_data::{AirportData, Runway},
     WorldData,
+    engine::world_data::{AirportData, Runway},
 };
 use color_eyre::Result;
 use glam::Vec2;

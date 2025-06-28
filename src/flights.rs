@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use air_traffic_simulator::{engine::world_data::Flight, WorldData};
-use color_eyre::{eyre::OptionExt, Result};
+use air_traffic_simulator::{WorldData, engine::world_data::Flight};
+use color_eyre::{Result, eyre::OptionExt};
 use gatelogue_types::{AirMode, GatelogueData};
 
 pub async fn flights(world_data: &mut WorldData, gatelogue_data: &GatelogueData) -> Result<()> {
@@ -15,7 +15,8 @@ pub async fn flights(world_data: &mut WorldData, gatelogue_data: &GatelogueData)
                 Ok(Some(Arc::new(Flight {
                     airline: gatelogue_data
                         .get_air_airline(*a.airline)?
-                        .name.clone()
+                        .name
+                        .clone()
                         .into(),
                     code: a.codes.join("/").into(),
                     from: {
@@ -23,7 +24,8 @@ pub async fn flights(world_data: &mut WorldData, gatelogue_data: &GatelogueData)
                             .get_air_gate(**a.gates.first().ok_or_eyre("No from")?)?;
                         let code = gatelogue_data
                             .get_air_airport(*gate.airport)?
-                            .code.clone()
+                            .code
+                            .clone()
                             .into();
                         if !world_data.airports.iter().any(|a| a.code == code) {
                             return Ok(None);
@@ -35,7 +37,8 @@ pub async fn flights(world_data: &mut WorldData, gatelogue_data: &GatelogueData)
                             gatelogue_data.get_air_gate(**a.gates.get(1).ok_or_eyre("No to")?)?;
                         let code = gatelogue_data
                             .get_air_airport(*gate.airport)?
-                            .code.clone()
+                            .code
+                            .clone()
                             .into();
                         if !world_data.airports.iter().any(|a| a.code == code) {
                             return Ok(None);

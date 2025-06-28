@@ -1,6 +1,6 @@
 use std::sync::LazyLock;
 
-use color_eyre::{eyre::eyre, Report, Result};
+use color_eyre::{Report, Result, eyre::eyre};
 use glam::Vec2;
 use serde::{Deserialize, Deserializer};
 

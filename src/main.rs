@@ -4,9 +4,9 @@ mod utils;
 mod waypoints;
 
 use air_traffic_simulator::WorldData;
-use color_eyre::{eyre::eyre, Result};
+use color_eyre::{Result, eyre::eyre};
 use gatelogue_types::GatelogueData;
-use tracing_subscriber::{fmt, prelude::*, EnvFilter};
+use tracing_subscriber::{EnvFilter, fmt, prelude::*};
 
 use crate::{airports::airports, flights::flights, waypoints::waypoints};
 

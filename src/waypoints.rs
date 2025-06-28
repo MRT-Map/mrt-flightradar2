@@ -4,7 +4,7 @@ use std::{
     sync::{Arc, LazyLock},
 };
 
-use air_traffic_simulator::{engine::world_data::Waypoint, WorldData};
+use air_traffic_simulator::{WorldData, engine::world_data::Waypoint};
 use color_eyre::Result;
 use gatelogue_types::GatelogueData;
 use glam::{DVec2, Vec2};
@@ -61,7 +61,7 @@ pub static WAYPOINT_NAMINGS: [&str; 18] = [
 ];
 
 impl WaypointNameGenerator {
-    fn gen(&mut self, rng: &mut StdRng) -> SmolStr {
+    fn gen_(&mut self, rng: &mut StdRng) -> SmolStr {
         let mut new = SmolStr::default();
         while new.is_empty() || self.0.contains(&new) {
             let naming = WAYPOINT_NAMINGS.choose(rng).unwrap();
@@ -102,7 +102,7 @@ fn nearest_waypoints(waypoints: &[(SmolStr, Vec2, Vec<SmolStr>)], wp: Vec2) -> V
 }
 
 pub async fn waypoints(world_data: &mut WorldData, gatelogue_data: &GatelogueData) -> Result<()> {
-    let mut gen = WaypointNameGenerator::new();
+    let mut gen_ = WaypointNameGenerator::new();
     let mut waypoints: Vec<(SmolStr, Vec2, Vec<SmolStr>)> = gatelogue_data
         .air_airports()
         .filter_map(|a| a.common.coordinates.clone())
@@ -117,7 +117,7 @@ pub async fn waypoints(world_data: &mut WorldData, gatelogue_data: &GatelogueDat
                     let mut s = DefaultHasher::new();
                     c.0.to_le_bytes().hash(&mut s);
                     c.1.to_le_bytes().hash(&mut s);
-                    gen.gen(&mut StdRng::seed_from_u64(s.finish()))
+                    gen_.gen_(&mut StdRng::seed_from_u64(s.finish()))
                 },
                 { DVec2::from(*c).as_vec2() },
                 vec![],
