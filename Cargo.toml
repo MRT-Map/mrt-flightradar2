@@ -4,6 +4,7 @@ version = "2.0.0"
 edition = "2024"
 rust-version = "1.86"
 
+
 [dependencies]
 air-traffic-simulator = { git = "https://github.com/bitfielddev/air-traffic-simulator" }
 
@@ -11,7 +12,7 @@ gatelogue-types = { version = "2.0.4", features = ["surf_get"] }
 
 color-eyre = "0.6.5"
 serde_yaml = "0.9.34"
-tokio = { version = "1.45.1", features = ["full"] }
+tokio = { version = "1.46.1", features = ["full"] }
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 
 itertools = "0.14.0"
