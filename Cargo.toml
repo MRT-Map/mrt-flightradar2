@@ -5,7 +5,6 @@ edition = "2024"
 rust-version = "1.86"
 
 
-
 [dependencies]
 air-traffic-simulator = { git = "https://github.com/bitfielddev/air-traffic-simulator" }
 
