@@ -7,20 +7,20 @@ rust-version = "1.89"
 [dependencies]
 air-traffic-simulator = { git = "https://github.com/bitfielddev/air-traffic-simulator" }
 
-gatelogue-types = { version = "2.0.4", features = ["surf_get"] }
+gatelogue-types = { version = "=2.0.4", features = ["surf_get"] }
 
-color-eyre = "0.6.5"
-serde_yaml = "0.9.34"
-tokio = { version = "1.48.0", features = ["full"] }
-tracing-subscriber = { version = "0.3.20", features = ["env-filter"] }
+color-eyre = "=0.6.5"
+serde_yaml = "=0.9.34"
+tokio = { version = "=1.48.0", features = ["full"] }
+tracing-subscriber = { version = "=0.3.20", features = ["env-filter"] }
 
-itertools = "0.14.0"
-surf = "2.3.2"
-csv = "1.4.0"
-glam = "0.30.9"
-smol_str = "0.3.4"
-serde = { version = "1.0.228", features = ["derive"] }
-rand = "0.9.2"
+itertools = "=0.14.0"
+surf = "=2.3.2"
+csv = "=1.4.0"
+glam = "=0.30.9"
+smol_str = "=0.3.4"
+serde = { version = "=1.0.228", features = ["derive"] }
+rand = "=0.9.2"
 
 [lints.rust]
 future-incompatible = "deny"
