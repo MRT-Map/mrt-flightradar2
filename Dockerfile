@@ -17,7 +17,7 @@ RUN cargo chef cook --release --recipe-path recipe.json
 COPY . .
 RUN cargo +nightly build --release
 
-FROM node:slim@sha256:d9dab42dc0e575d6e959b7b3d6962fd35cb4ef668e6ad4b4cda135488c504bbe AS runtime
+FROM node:slim@sha256:3772bb7a81a865c2ecf5e230ecc40d4df60e919bf27567514f8b8f1989af955c AS runtime
 RUN apt update && apt install -y curl libcurl4
 
 COPY --from=builder /target/release/mrt-flightradar2 .
