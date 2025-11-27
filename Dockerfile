@@ -1,4 +1,4 @@
-FROM rustlang/rust:nightly-slim@sha256:2a28e864c2522210a549ecb49d91f7a83460d823486ec2bb62223c0958203e04 AS chef
+FROM rustlang/rust:nightly-slim@sha256:727c138c402d865f9df47c309f8035970bbf5af34285e5cb48aefcd2e33587d0 AS chef
 RUN apt update && apt install -y curl pkg-config libssl-dev
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 RUN cargo binstall cargo-chef
