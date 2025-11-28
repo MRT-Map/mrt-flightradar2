@@ -9,7 +9,6 @@ on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
-    paths: [".github/workflows/docker-publish.yml", "Dockerfile", ".dockerignore"]
 
 env:
   # Use docker.io for Docker Hub if empty
