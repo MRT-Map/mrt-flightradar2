@@ -34,7 +34,7 @@ jobs:
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
-        if: github.event_name != 'pull_request' && !startsWith(github.head_ref, 'renovate/')
+        if: github.event_name != 'pull_request' && !startsWith(github.ref_name, 'renovate/')
         uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad #v4.0.0
         # with:
         #   cosign-release: 'v2.2.4'
@@ -48,7 +48,7 @@ jobs:
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request' && !startsWith(github.head_ref, 'renovate/')
+        if: github.event_name != 'pull_request' && !startsWith(github.ref_name, 'renovate/')
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
           registry: ${{ env.REGISTRY }}
@@ -70,7 +70,7 @@ jobs:
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' && !startsWith(github.head_ref, 'renovate/') }}
+          push: ${{ github.event_name != 'pull_request' && !startsWith(github.ref_name, 'renovate/') }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
@@ -82,7 +82,7 @@ jobs:
       # transparency data even for private images, pass --force to cosign below.
       # https://github.com/sigstore/cosign
       - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' && !startsWith(github.head_ref, 'renovate/') }}
+        if: ${{ github.event_name != 'pull_request' && !startsWith(github.ref_name, 'renovate/') }}
         env:
           # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
           TAGS: ${{ steps.meta.outputs.tags }}
