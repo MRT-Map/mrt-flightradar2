@@ -7,7 +7,7 @@ rust-version = "1.89"
 [dependencies]
 air-traffic-simulator = { git = "https://github.com/bitfielddev/air-traffic-simulator" }
 
-gatelogue-types = { version = "=2.0.8", features = ["surf_get"] }
+gatelogue-types = { version = "=2.0.9", features = ["surf_get"] }
 
 color-eyre = "=0.6.5"
 serde_yaml = "=0.9.34"
