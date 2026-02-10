@@ -1,4 +1,4 @@
-FROM rustlang/rust:nightly-slim@sha256:d3710b7d4110e629649fdaf6418518286e0e840a3a82ba7059c15e037e903773 AS chef
+FROM rustlang/rust:nightly-slim@sha256:5d0ca34a855295050a4d28e27199a56b3a124066315aa2496a95b1c7f04f631f AS chef
 WORKDIR /app
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 # renovate: deb depName=curl
