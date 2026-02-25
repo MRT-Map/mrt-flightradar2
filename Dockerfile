@@ -37,7 +37,7 @@ COPY . .
 RUN cargo +nightly build --release
 
 
-FROM node:trixie-slim@sha256:5249f8aedf9432a08f0cfcca3d07a04ece95e6a8f4710590e1a8226b028c1233 AS runtime
+FROM node:trixie-slim@sha256:f3442599b9c4ee3ed64146b743b4b78c29d9e39d437ec6ca6f17a52fcd11d98e AS runtime
 WORKDIR /app
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
