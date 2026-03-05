@@ -6,7 +6,7 @@ use std::{
 
 use air_traffic_simulator::{WorldData, engine::world_data::Waypoint};
 use color_eyre::Result;
-use gatelogue_types::GatelogueData;
+use gatelogue_types::{AirAirport, GD, LocatedNode, Town};
 use glam::{DVec2, Vec2};
 use itertools::Itertools;
 use rand::prelude::*;
@@ -101,29 +101,31 @@ fn nearest_waypoints(waypoints: &[(SmolStr, Vec2, Vec<SmolStr>)], wp: Vec2) -> V
     nearest
 }
 
-pub async fn waypoints(world_data: &mut WorldData, gatelogue_data: &GatelogueData) -> Result<()> {
+pub fn waypoints(world_data: &mut WorldData, gd: &GD) -> Result<()> {
     let mut gen_ = WaypointNameGenerator::new();
-    let mut waypoints: Vec<(SmolStr, Vec2, Vec<SmolStr>)> = gatelogue_data
-        .air_airports()
-        .filter_map(|a| a.common.coordinates.clone())
+    let mut waypoints = gd
+        .nodes_of_type::<AirAirport>()?
+        .into_iter()
+        .map(|a| a.coordinates(gd))
         .chain(
-            gatelogue_data
-                .towns()
-                .filter_map(|a| a.common.coordinates.clone()),
+            gd.nodes_of_type::<Town>()?
+                .into_iter()
+                .map(|a| a.coordinates(gd)),
         )
-        .map(|c| {
+        .filter_map_ok(|a| a)
+        .map_ok(|(x, y)| {
             (
                 {
                     let mut s = DefaultHasher::new();
-                    c.0.to_le_bytes().hash(&mut s);
-                    c.1.to_le_bytes().hash(&mut s);
+                    x.to_le_bytes().hash(&mut s);
+                    y.to_le_bytes().hash(&mut s);
                     gen_.gen_(&mut StdRng::seed_from_u64(s.finish()))
                 },
-                { DVec2::from(*c).as_vec2() },
+                { DVec2::new(x, y).as_vec2() },
                 vec![],
             )
         })
-        .collect();
+        .collect::<Result<Vec<(SmolStr, Vec2, Vec<SmolStr>)>, _>>()?;
 
     let mut airways = vec![];
     for (name, coords, _) in &waypoints {

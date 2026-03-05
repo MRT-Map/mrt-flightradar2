@@ -5,7 +5,7 @@ mod waypoints;
 
 use air_traffic_simulator::WorldData;
 use color_eyre::{Result, eyre::eyre};
-use gatelogue_types::GatelogueData;
+use gatelogue_types::GD;
 use tracing_subscriber::{EnvFilter, fmt, prelude::*};
 
 use crate::{airports::airports, flights::flights, waypoints::waypoints};
@@ -19,13 +19,11 @@ async fn main() -> Result<()> {
         .try_init()?;
 
     let mut world_data: WorldData = serde_yaml::from_str(include_str!("config/wd.yml"))?;
-    let gatelogue_data = GatelogueData::surf_get_no_sources()
-        .await
-        .map_err(|e| eyre!("{e}"))?;
+    let gd = GD::surf_get_no_sources().await.map_err(|e| eyre!("{e}"))?;
 
     airports(&mut world_data).await?;
-    waypoints(&mut world_data, &gatelogue_data).await?;
-    flights(&mut world_data, &gatelogue_data).await?;
+    waypoints(&mut world_data, &gd)?;
+    flights(&mut world_data, &gd)?;
 
     let engine_config = serde_yaml::from_str(include_str!("config/engine_config.yml"))?;
     let engine = air_traffic_simulator::Engine::new(world_data, engine_config);
