@@ -1,49 +1,35 @@
 use std::sync::Arc;
 
 use air_traffic_simulator::{WorldData, engine::world_data::Flight};
-use color_eyre::{Result, eyre::OptionExt};
-use gatelogue_types::{AirMode, GatelogueData};
+use color_eyre::Result;
+use gatelogue_types::{AirFlight, AirMode, GD};
 
-pub async fn flights(world_data: &mut WorldData, gatelogue_data: &GatelogueData) -> Result<()> {
+pub fn flights(world_data: &mut WorldData, gd: &GD) -> Result<()> {
     world_data.flights = Some(
-        gatelogue_data
-            .air_flights()
-            .map(|a| {
-                if a.gates.len() < 2 || a.mode.as_ref().is_some_and(|a| **a != AirMode::WarpPlane) {
+        gd.nodes_of_type::<AirFlight>()?
+            .into_iter()
+            .map(|af| {
+                if let Some(ac) = af.aircraft(gd)?
+                    && ![AirMode::WarpPlane, AirMode::TrainCartsPlane].contains(&ac.mode(gd)?)
+                {
                     return Ok(None);
                 }
                 Ok(Some(Arc::new(Flight {
-                    airline: gatelogue_data
-                        .get_air_airline(*a.airline)?
-                        .name
-                        .clone()
-                        .into(),
-                    code: a.codes.join("/").into(),
+                    airline: af.airline(gd)?.name(gd)?.into(),
+                    code: af.code(gd)?.into(),
                     from: {
-                        let gate = gatelogue_data
-                            .get_air_gate(**a.gates.first().ok_or_eyre("No from")?)?;
-                        let code = gatelogue_data
-                            .get_air_airport(*gate.airport)?
-                            .code
-                            .clone()
-                            .into();
+                        let code = af.from(gd)?.airport(gd)?.code(gd)?;
                         if !world_data.airports.iter().any(|a| a.code == code) {
                             return Ok(None);
                         }
-                        code
+                        code.into()
                     },
                     to: {
-                        let gate =
-                            gatelogue_data.get_air_gate(**a.gates.get(1).ok_or_eyre("No to")?)?;
-                        let code = gatelogue_data
-                            .get_air_airport(*gate.airport)?
-                            .code
-                            .clone()
-                            .into();
+                        let code = af.to(gd)?.airport(gd)?.code(gd)?;
                         if !world_data.airports.iter().any(|a| a.code == code) {
                             return Ok(None);
                         }
-                        code
+                        code.into()
                     },
                     plane: ["Airplane".into()].into(),
                 })))
