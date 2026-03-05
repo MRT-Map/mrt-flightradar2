@@ -83,7 +83,7 @@ dependencies = [
 [[package]]
 name = "air-traffic-simulator"
 version = "0.1.0"
-source = "git+https://github.com/bitfielddev/air-traffic-simulator#555f9cead40b71c077a10cdb32763a71cf337ec9"
+source = "git+https://github.com/bitfielddev/air-traffic-simulator#f5044ab8349a54eab9d37ffff50c27e937b5c71d"
 dependencies = [
  "air-traffic-simulator-engine",
  "air-traffic-simulator-server",
@@ -92,7 +92,7 @@ dependencies = [
 [[package]]
 name = "air-traffic-simulator-engine"
 version = "0.1.0"
-source = "git+https://github.com/bitfielddev/air-traffic-simulator#555f9cead40b71c077a10cdb32763a71cf337ec9"
+source = "git+https://github.com/bitfielddev/air-traffic-simulator#f5044ab8349a54eab9d37ffff50c27e937b5c71d"
 dependencies = [
  "bytes 1.11.1",
  "derive_more",
@@ -114,7 +114,7 @@ dependencies = [
 [[package]]
 name = "air-traffic-simulator-server"
 version = "0.1.0"
-source = "git+https://github.com/bitfielddev/air-traffic-simulator#555f9cead40b71c077a10cdb32763a71cf337ec9"
+source = "git+https://github.com/bitfielddev/air-traffic-simulator#f5044ab8349a54eab9d37ffff50c27e937b5c71d"
 dependencies = [
  "air-traffic-simulator-engine",
  "async-fs",
@@ -1093,9 +1093,9 @@ dependencies = [
 
 [[package]]
 name = "gatelogue-types"
-version = "3.0.2+12"
+version = "3.0.5+12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "22db59ded4415b261fbded8a953105ef9bfa3547ca66e6139b24197f309f3b4f"
+checksum = "4a99df832be485638730c119864d1d861544d735985007918ad1122bb98b6dbc"
 dependencies = [
  "enum_dispatch",
  "rusqlite",
