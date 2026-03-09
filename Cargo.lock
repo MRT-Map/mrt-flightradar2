@@ -83,7 +83,7 @@ dependencies = [
 [[package]]
 name = "air-traffic-simulator"
 version = "0.1.0"
-source = "git+https://github.com/bitfielddev/air-traffic-simulator#f5044ab8349a54eab9d37ffff50c27e937b5c71d"
+source = "git+https://github.com/bitfielddev/air-traffic-simulator#a0f37bcd82b9b570bc80250dff350518404ed723"
 dependencies = [
  "air-traffic-simulator-engine",
  "air-traffic-simulator-server",
@@ -92,7 +92,7 @@ dependencies = [
 [[package]]
 name = "air-traffic-simulator-engine"
 version = "0.1.0"
-source = "git+https://github.com/bitfielddev/air-traffic-simulator#f5044ab8349a54eab9d37ffff50c27e937b5c71d"
+source = "git+https://github.com/bitfielddev/air-traffic-simulator#a0f37bcd82b9b570bc80250dff350518404ed723"
 dependencies = [
  "bytes 1.11.1",
  "derive_more",
@@ -114,7 +114,7 @@ dependencies = [
 [[package]]
 name = "air-traffic-simulator-server"
 version = "0.1.0"
-source = "git+https://github.com/bitfielddev/air-traffic-simulator#f5044ab8349a54eab9d37ffff50c27e937b5c71d"
+source = "git+https://github.com/bitfielddev/air-traffic-simulator#a0f37bcd82b9b570bc80250dff350518404ed723"
 dependencies = [
  "air-traffic-simulator-engine",
  "async-fs",
