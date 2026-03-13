@@ -1,5 +1,3 @@
-use std::sync::LazyLock;
-
 use color_eyre::{Report, Result, eyre::eyre};
 use glam::Vec2;
 use serde::{Deserialize, Deserializer};
@@ -26,14 +24,11 @@ pub fn deserialize_coords<'de, D: Deserializer<'de>>(de: D) -> Result<Option<Vec
     }
 }
 
-pub static SURF_CLIENT: LazyLock<surf::Client> =
-    LazyLock::new(|| surf::client().with(surf::middleware::Redirect::new(5)));
 pub async fn get_url(url: &'static str) -> Result<String> {
-    SURF_CLIENT
-        .send(surf::get(url))
+    reqwest::get(url)
         .await
         .map_err(|a| Report::msg(a.to_string()))?
-        .body_string()
+        .text()
         .await
         .map_err(|a| Report::msg(a.to_string()))
 }
