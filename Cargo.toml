@@ -22,6 +22,8 @@ smol_str = "=0.3.6"
 serde = { version = "=1.0.228", features = ["derive"] }
 rand = "=0.10.0"
 
+windows-sys = "=0.61.2"
+
 [lints.rust]
 future-incompatible = "deny"
 
