@@ -19,7 +19,9 @@ async fn main() -> Result<()> {
         .try_init()?;
 
     let mut world_data: WorldData = serde_yaml::from_str(include_str!("config/wd.yml"))?;
-    let gd = GD::surf_get_no_sources().await.map_err(|e| eyre!("{e}"))?;
+    let gd = GD::reqwest_get_no_sources()
+        .await
+        .map_err(|e| eyre!("{e}"))?;
 
     airports(&mut world_data).await?;
     waypoints(&mut world_data, &gd)?;
