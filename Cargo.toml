@@ -12,7 +12,7 @@ gatelogue-types = { version = "=3.0.8", features = ["reqwest_get", "bundled"] }
 color-eyre = "=0.6.5"
 serde_yaml = "=0.9.34"
 tokio = { version = "=1.50.0", features = ["full"] }
-tracing-subscriber = { version = "=0.3.22", features = ["env-filter"] }
+tracing-subscriber = { version = "=0.3.23", features = ["env-filter"] }
 
 itertools = "=0.14.0"
 reqwest = "0.13.2"
