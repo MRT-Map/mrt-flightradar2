@@ -18,3 +18,4 @@ jobs:
         with:
           default_author: github_actions
           message: ${{ env.message }}
+          commit: --amend
