@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 # renovate: deb depName=curl
 ENV CURL_VERSION="8.14.1-2+deb13u2"
 # renovate: deb depName=pkg-config
-ENV PKG_CONFIG_VERSION="1.8.1-4"
+ENV PKG_CONFIG_VERSION="3.5.5-1~deb13u1"
 # renovate: deb depName=libssl-dev
 ENV LIBSSL_VERSION="3.5.5-1~deb13u1"
 RUN apt-get update && apt-get install -y --no-install-recommends \
