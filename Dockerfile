@@ -6,7 +6,7 @@ ENV CURL_VERSION="8.14.1-2+deb13u2"
 # renovate: datasource=deb depName=pkg-config
 ENV PKG_CONFIG_VERSION="1.8.1-4"
 # renovate: datasource=deb depName=libssl-dev
-ENV LIBSSL_VERSION="3.5.5-1~deb13u1"
+ENV LIBSSL_VERSION="3.5.5-1~deb13u2"
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl="${CURL_VERSION}" \
     pkg-config="${PKG_CONFIG_VERSION}" \
