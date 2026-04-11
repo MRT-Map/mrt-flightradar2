@@ -145,8 +145,7 @@ pub fn waypoints(world_data: &mut WorldData, gd: &GD) -> Result<()> {
                     None
                 }
             })
-            .sorted()
-            .dedup()
+            .unique()
             .collect();
     }
     world_data.waypoints = waypoints
