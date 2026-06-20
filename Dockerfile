@@ -1,4 +1,4 @@
-FROM rustlang/rust:nightly-slim@sha256:3c8ef0764b4bf66dbcc02a322491a63161e0ddbcd9d89f85694fd306d3be3eb6 AS chef
+FROM rustlang/rust:nightly-slim@sha256:94b8b0f1728c967649c664c69ff98e9d5543671f005515be3d8a083c5606dffe AS chef
 WORKDIR /app
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 # renovate: datasource=deb depName=curl
@@ -6,7 +6,7 @@ ENV CURL_VERSION="8.14.1-2+deb13u3"
 # renovate: datasource=deb depName=pkg-config
 ENV PKG_CONFIG_VERSION="1.8.1-4"
 # renovate: datasource=deb depName=libssl-dev
-ENV LIBSSL_VERSION="3.5.6-1~deb13u1"
+ENV LIBSSL_VERSION="3.5.6-1~deb13u2"
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl="${CURL_VERSION}" \
     pkg-config="${PKG_CONFIG_VERSION}" \
