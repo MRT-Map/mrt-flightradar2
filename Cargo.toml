@@ -17,7 +17,7 @@ tracing-subscriber = { version = "=0.3.23", features = ["env-filter"] }
 itertools = "=0.15.0"
 reqwest = "=0.13.4"
 csv = "=1.4.0"
-glam = "=0.32.1"
+glam = "=0.33.2"
 smol_str = "=0.3.6"
 serde = { version = "=1.0.228", features = ["derive"] }
 rand = "=0.10.1"
