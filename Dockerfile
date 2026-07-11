@@ -44,7 +44,7 @@ SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 # renovate: datasource=deb depName=curl
 ENV CURL_VERSION="8.14.1-2+deb13u3"
 # renovate: datasource=deb depName=libcurl4t64
-ENV LIBCURL_VERSION="8.14.1-2+deb13u3"
+ENV LIBCURL_VERSION="8.14.1-2+deb13u4"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl="${CURL_VERSION}" \
