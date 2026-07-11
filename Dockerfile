@@ -2,7 +2,7 @@ FROM rustlang/rust:nightly-slim@sha256:f1d55816940af107c3ce4cdf6175c15854d35880b
 WORKDIR /app
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 # renovate: datasource=deb depName=curl
-ENV CURL_VERSION="8.14.1-2+deb13u3"
+ENV CURL_VERSION="8.14.1-2+deb13u4"
 # renovate: datasource=deb depName=pkg-config
 ENV PKG_CONFIG_VERSION="1.8.1-4"
 # renovate: datasource=deb depName=libssl-dev
@@ -42,9 +42,9 @@ WORKDIR /app
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
 # renovate: datasource=deb depName=curl
-ENV CURL_VERSION="8.14.1-2+deb13u3"
+ENV CURL_VERSION="8.14.1-2+deb13u4"
 # renovate: datasource=deb depName=libcurl4t64
-ENV LIBCURL_VERSION="8.14.1-2+deb13u3"
+ENV LIBCURL_VERSION="8.14.1-2+deb13u4"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl="${CURL_VERSION}" \
