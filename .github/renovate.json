@@ -10,6 +10,10 @@
       "automerge": true,
       "automergeType": "branch",
       "ignoreTests": true
+    },
+    {
+      "matchPackageNames": ["libcurl4t64", "curl"],
+      "groupName": "curl"
     }
   ]
 }
