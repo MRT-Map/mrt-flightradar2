@@ -25,7 +25,7 @@ rand = "=0.10.2"
 windows-sys = "=0.61.2"
 
 [lints.rust]
-future-incompatible = "deny"
+future_incompatible = "deny"
 
 [lints.clippy]
 all = "warn"
