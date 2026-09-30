@@ -45,7 +45,7 @@ dependencies = [
  "dubins_paths",
  "duplicate",
  "eyre",
- "glam",
+ "glam 0.32.1",
  "itertools",
  "rand",
  "rayon",
@@ -590,7 +590,7 @@ version = "3.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "75dae6e76040d72eb074acd157feb0c87a4cc4194b6e5e2927a68755b89f1f9e"
 dependencies = [
- "glam",
+ "glam 0.32.1",
  "rkyv",
  "serde",
 ]
@@ -918,6 +918,12 @@ dependencies = [
  "rkyv",
  "serde_core",
 ]
+
+[[package]]
+name = "glam"
+version = "0.33.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "35b4e837a1d133645d1dcf283e146a4b9901e390a1c13545f959cfed3a72f24f"
 
 [[package]]
 name = "h2"
@@ -1447,7 +1453,7 @@ dependencies = [
  "color-eyre",
  "csv",
  "gatelogue-types",
- "glam",
+ "glam 0.33.11",
  "itertools",
  "rand",
  "reqwest",
