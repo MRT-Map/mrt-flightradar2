@@ -45,7 +45,7 @@ dependencies = [
  "dubins_paths",
  "duplicate",
  "eyre",
- "glam 0.33.12",
+ "glam",
  "itertools",
  "rand",
  "rayon",
@@ -590,7 +590,7 @@ version = "3.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6318f70cfbcd87a5d507cd760b7249547d59e86f1de6a0e6c557a32001627eda"
 dependencies = [
- "glam 0.33.12",
+ "glam",
  "rkyv",
  "serde",
 ]
@@ -908,12 +908,6 @@ name = "gimli"
 version = "0.32.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e629b9b98ef3dd8afe6ca2bd0f89306cec16d43d907889945bc5d6687f2f13c7"
-
-[[package]]
-name = "glam"
-version = "0.32.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f70749695b063ecbf6b62949ccccde2e733ec3ecbbd71d467dca4e5c6c97cca0"
 
 [[package]]
 name = "glam"
@@ -1453,7 +1447,7 @@ dependencies = [
  "color-eyre",
  "csv",
  "gatelogue-types",
- "glam 0.32.1",
+ "glam",
  "itertools",
  "rand",
  "reqwest",
