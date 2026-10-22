@@ -1,16 +1,16 @@
 FROM rustlang/rust:nightly-slim@sha256:43ffaec7eae37d372943a5ec76df76eedcc62b65fbeb24a6c14132541112bc26 AS chef
 WORKDIR /app
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
-# renovate: datasource=deb depName=curl
-ENV CURL_VERSION="8.14.1-2+deb13u5"
+# renovate: datasource=deb depName=curl extractVersion=^(?<version>[^+]+)
+ENV CURL_VERSION="8.14.1-2"
 # renovate: datasource=deb depName=pkg-config
 ENV PKG_CONFIG_VERSION="1.8.1-4"
-# renovate: datasource=deb depName=libssl-dev
-ENV LIBSSL_VERSION="3.5.7-1~deb13u2"
+# renovate: datasource=deb depName=libssl-dev extractVersion=^(?<version>[^~]+)
+ENV LIBSSL_VERSION="3.5.7-1"
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl="${CURL_VERSION}" \
+    curl="${CURL_VERSION}+*" \
     pkg-config="${PKG_CONFIG_VERSION}" \
-    libssl-dev="${LIBSSL_VERSION}" \
+    libssl-dev="${LIBSSL_VERSION}~*" \
     && rm -r /var/lib/apt/lists/* && apt-get clean
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 RUN cargo binstall cargo-chef
@@ -41,14 +41,14 @@ FROM node:trixie-slim@sha256:36793bcbb160a6a16cede1e62b93f84e26b78a972a8a4c0b879
 WORKDIR /app
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
-# renovate: datasource=deb depName=curl
-ENV CURL_VERSION="8.14.1-2+deb13u5"
-# renovate: datasource=deb depName=libcurl4t64
-ENV LIBCURL_VERSION="8.14.1-2+deb13u5"
+# renovate: datasource=deb depName=curl extractVersion=^(?<version>[^+]+)
+ENV CURL_VERSION="8.14.1-2"
+# renovate: datasource=deb depName=libcurl4t64 extractVersion=^(?<version>[^+]+)
+ENV LIBCURL_VERSION="8.14.1-2"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl="${CURL_VERSION}" \
-    libcurl4t64="${LIBCURL_VERSION}" \
+    curl="${CURL_VERSION}+*" \
+    libcurl4t64="${LIBCURL_VERSION}+*" \
     && rm -r /var/lib/apt/lists/* && apt-get clean
 
 COPY --from=build /app/target/release/mrt-flightradar2 .
